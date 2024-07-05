@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import axios from 'axios';
+import { Artist } from './interface';
 
 function App() {
   const CLIENT_ID = '7538c85bb11846819cd8be3362a2135c';
@@ -9,8 +10,8 @@ function App() {
   const RESPONSE_TYPE = 'token';
 
   const [token, setToken] = useState<string | null>(null);
-  const [searchKey, setSearchKey] = useState('');
-  const [artists, setArtists] = useState([]);
+  const [searchKey, setSearchKey] = useState<string>('');
+  const [artists, setArtists] = useState<Artist[]>([]);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -40,7 +41,7 @@ function App() {
     window.localStorage.removeItem('token');
   };
 
-  const searchArtists = async (e) => {
+  const searchArtists = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const { data } = await axios.get('https://api.spotify.com/v1/search', {
       headers: {
